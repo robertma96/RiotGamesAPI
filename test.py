@@ -61,5 +61,9 @@ for i in range(len(lista)):
     campion = lista[i][0]
     numar_jocuri = lista[i][1]
     numar_winuri = lista[i][2]
+    numar_killuri = lista[i][3]
+    numar_deaths = lista[i][4]
+    numar_assists = lista[i][5]
     print('Nume: ' + str(campion) + '\n' + 'Meciuri: ' + str(numar_jocuri) + '\n' + 'Meciuri castigate: ' +
-          str(numar_winuri) + '\n' + '\n')
+          str(numar_winuri) + '\n' + 'Kills: ' + str(numar_killuri) + '\n' + 'Deaths: ' + str(numar_deaths) + '\n' +
+          'Assits: ' + str(numar_assists) + '\n' + '\n')

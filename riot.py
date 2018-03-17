@@ -8,7 +8,7 @@ config.read('config.ini')
 api_key = config.get('auth', 'api_key')
 
 region = 'EUNE'
-summoner_name = 'Jon Snow'
+summoner_name = 'zavo01'
 
 lista_campioni = []
 lista_winrate_campioni = []
@@ -90,6 +90,7 @@ def getIDMatches():
     return lista_match_id
 
 lista_meciuri = getIDMatches()
+print(len(lista_meciuri))
 
 
 with open('lista_meciuri.txt', 'r+') as file:
@@ -100,8 +101,12 @@ with open('lista_meciuri.txt', 'r+') as file:
 
 
 def championwinrate():
+    participant_id = None
     global lista_winrate_campioni
     global update
+    kills = None
+    deaths = None
+    assists = None
     meciuri_de_adaugat = []
     matchID = lista_meciuri
     contor = 0
@@ -145,6 +150,12 @@ def championwinrate():
                         lista[i] = obiect['teams'][i]['win']
                     for i in range(0, 10):
                         if obiect['participantIdentities'][i]['player']['summonerName'] == summoner_name:
+                            participant_id = obiect['participantIdentities'][i]['participantId']
+                        if obiect['participants'][i]['participantId'] == participant_id:
+                            kills = obiect['participants'][i]['stats']['kills']
+                            deaths = obiect['participants'][i]['stats']['deaths']
+                            assists = obiect['participants'][i]['stats']['assists']
+                        if obiect['participantIdentities'][i]['player']['summonerName'] == summoner_name:
                             if i + 1 <= 5 and lista[0] == 'Win':
                                 champID = obiect['participants'][i]['championId']
                                 games = 1
@@ -162,7 +173,7 @@ def championwinrate():
                                 games = 1
                                 WON = False
                                 print("LOSS " + str(champID))
-                    lista_de_adaugat = [champID, games, win]
+                    lista_de_adaugat = [champID, games, win, kills, deaths, assists]
                     contor = contor + 1
                     if contor == 30:
                         time.sleep(30)
@@ -177,6 +188,9 @@ def championwinrate():
                                     lista_winrate_campioni.append(lista_de_adaugat)
                             elif champID == lista_winrate_campioni[i][0]:
                                 lista_winrate_campioni[i][1] += 1
+                                lista_winrate_campioni[i][3] += lista_de_adaugat[3]
+                                lista_winrate_campioni[i][4] += lista_de_adaugat[4]
+                                lista_winrate_campioni[i][5] += lista_de_adaugat[5]
                                 if WON == True:
                                     lista_winrate_campioni[i][2] += 1
                                     WON = None
