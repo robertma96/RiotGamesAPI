@@ -1,0 +1,329 @@
+{% extends 'posts/layout.html' %}
+{% block content %}
+
+<section class="mainstats">
+    <table class="withborder">
+        <tr>
+            <td>
+                <div class="center-align">
+                    <img src="{{ icon }}" alt="" class="circle" width="100" height="100" style="padding-top: 5px">
+                </div>
+                <div class="center-align">
+                    <h5>Level {{ summonerlevel }}</h5>
+                </div>
+            </td>
+            <td>
+                <div class="column">
+                        <span class="black-text">
+                            <b style="white-space: nowrap"> {{ name }} </b>
+                        </span>
+                </div>
+            </td>
+            <td>
+                <div class="column">
+                    {% load static %}
+                    <img src="/static/posts/{{tier_icon}}" alt="" width="90" height="90"/>
+                </div>
+            </td>
+            <td>
+                <span class="black-text" style="white-space: nowrap">
+                    <h5 class="left-align"><span class="blue-text">{{ tier }}</span></h5>
+                    <h5><b>{{ leaguepoints }}</b> / {{ wins }} {{ losses }}</h5>
+                    <h5>Win Ratio {{ winrate }}</h5>
+                </span>
+            </td>
+            <td>
+                <div class="column">
+                    <p style="font-size: 15px" class="center-align"> {{ tuplelast20games.0 }}G {{ tuplelast20games.1 }}W
+                        {{ tuplelast20games.2 }}L
+                    </p>
+                    <div id="JSFiddle">
+                        <div id="donutchart" style="width: 90px; height: 90px;"></div>
+                        <div class="overlay">{{ tuplelast20games.7|safe }}</div>
+                        <div class="kda"><strong>{{ tuplelast20games.6|safe }}:1 KDA</strong><br>{{ tuplelast20games.3|safe }}/{{ tuplelast20games.4|safe }}/{{ tuplelast20games.5|safe }}
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="column">
+                    <table id="tabel3campioni">
+                        {% for campionlast in listapentruhtml_last20games %}
+                        <tr>
+                            <td><img class="circle" src="{{ campionlast.1|safe }}" height="35" width="35"></td>
+                            <td style="white-space: nowrap">{{ campionlast.0|safe }} <br> {{ campionlast.3|safe }} ({{ campionlast.4|safe }}W {{ campionlast.5|safe }}L)</td>
+                            <td id="b1" style="white-space: nowrap">
+                                    {% if campionlast.2 > 5 %}
+                                        <b style="color: #ffa726">{{ campionlast.2|safe }} KDA </b>
+                                    {% elif campionlast.2 > 4 %}
+                                        <b style="color: #64b5f6">{{ campionlast.2|safe }} KDA </b>
+                                    {% elif campionlast.2 > 3 %}
+                                        <b style="color: #66bb6a">{{ campionlast.2|safe }} KDA </b>
+                                    {% else %}
+                                        <b>{{ campionlast.2|safe }} KDA</b>
+                                    {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</section>
+<br>
+
+<section class="licamp">
+    <table class="withborder" id="internalActivities">
+        <tr>
+            <th colspan="5">Champion Stats</th>
+        </tr>
+        {% for campion in listapentruhtml %}
+        <tr>
+            <td><img src="{{ campion.1|safe }}" title="{{ campion.0|safe }}" height="50"
+                     width="50" alt="{{ campion.0 }}" class="circle"></td>
+            <td style="width: 75px"><b class="nume_campion"> {{ campion.0|safe }} </b>
+                <br>
+                <div class="grey-text" title="avg. CS (CS/m)">CS {{ campion.9|safe }} ({{ campion.10|safe }})</div>
+            </td>
+            <td><span class="grey-text text darken-2"
+                      title="{{ campion.5|safe }} + {{ campion.7|safe }} / {{ campion.6|safe }}">
+                {% if campion.4 > 5 %}
+                <b style="color: #ffa726">{{ campion.4|safe }}:1 KDA</b>
+                {% elif campion.4 > 4 %}
+                <b style="color: #64b5f6">{{ campion.4|safe }}:1 KDA</b>
+                {% elif campion.4 > 3 %}
+                <b style="color: #66bb6a">{{ campion.4|safe }}:1 KDA</b>
+                {% else %}
+                <b>{{ campion.4|safe }}:1 KDA</b>
+                {% endif %}
+                </span>
+                <br>
+                <span class="kda"
+                      title="Kills/Death/Assists">{{ campion.5|safe }}/{{ campion.6|safe }}/{{ campion.7|safe }}</span>
+            </td>
+
+            <td><p class="kda">
+                <span class="grey-text text darken-2">
+                    {% if campion.8 > 0.6 %}
+                    <b style="color: #ef5350">{{ campion.3|safe }}</b>
+                    {% else %}
+                    <b>{{ campion.3|safe }}</b>
+                    {% endif %}
+                    <br>
+                    {{ campion.2|safe }} Played
+                </span>
+            </p></td>
+            <td>
+                <button style="background-color: #ef5350" href="/stats/recommandations" id="buton_campion" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <table style="border: 0; padding-bottom: 0">
+        <tr>
+            <td style="border-bottom: 0"><div id="recom"></div></td>
+        </tr>
+    </table>
+
+    <input type="button" id="seeMoreRecords" value="Show More" class="button">
+    <input type="button" id="seeLessRecords" value="Show Less" class="button">
+</section>
+
+<style>
+    .button {
+        background-color: #ef5350;
+        border: none;
+        color: whitesmoke;
+        padding: 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+    .kda {
+        text-align: center;
+
+    }
+
+    .column {
+        float: left;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .grey-text {
+        white-space: nowrap;
+    }
+
+    .mainstats .black-text {
+        font-size: 250%;
+    }
+
+    .black-text {
+        font-size: 50px;
+    }
+
+    table {
+        border-radius: 1px;
+        background-color: #fafafa;
+        display: table-cell;
+        vertical-align: top;
+        border-collapse: collapse;
+        border: 1px solid #dddddd;
+        /*table-layout: fixed;*/
+        width: auto;
+        margin: 0;
+    }
+
+    .withborder td {
+        border-bottom: 1px solid #dddddd;
+        margin: 0;
+        padding: 0;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 5px;
+    }
+
+    .withborder th {
+        border-bottom: 1px solid #dddddd;
+        text-align: center;
+        padding: 0;
+        padding-left: 5px;
+        padding-right: 5px;
+        margin-bottom: 0;
+        font-size: 90%;
+    }
+
+    #JSFiddle {
+        position: relative;
+    }
+
+    .overlay {
+        display: block;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        vertical-align: middle;
+        position: absolute;
+        top: 25%; /* chartArea top  */
+        left: 28%; /* chartArea left */
+        margin-top: 0;
+        font-size: 15px;
+    }
+
+    #tabel3campioni {
+        border: 0;
+    }
+
+    #tabel3campioni td {
+        border-bottom: 0;
+        padding-bottom: 5px;
+        padding-top: 5px;
+    }
+
+</style>
+
+<script>
+    $('button#buton_campion').click(function() {
+        var button = $(this);
+        var nume_camp = button.closest('tr').find(".nume_campion").html();
+        $.ajax({
+            url: '/stats/recommandations/',
+            data: JSON.stringify({ nume:nume_camp}),
+            type: 'POST',
+            success: function(response) {
+                $('div#recom').html(response);
+            },
+            error: function(response) {
+                console.log("Something went wrong! See response below" );
+                console.log(response);
+            },
+            contentType: 'application/json;charset=UTF-8'
+
+        });
+    });
+</script>
+<script>
+    var trs = $("#internalActivities tr");
+    var btnMore = $("#seeMoreRecords");
+    var btnLess = $("#seeLessRecords");
+    var trsLength = trs.length;
+    var currentIndex = 8;
+
+    trs.hide();
+    trs.slice(0, 8).show();
+    checkButton();
+
+    btnMore.click(function (e) {
+        e.preventDefault();
+        $("#internalActivities tr").slice(currentIndex, currentIndex + 8).show();
+        currentIndex += 8;
+        checkButton();
+    });
+
+    btnLess.click(function (e) {
+        e.preventDefault();
+        $("#internalActivities tr").slice(currentIndex - 8, currentIndex).hide();
+        currentIndex -= 8;
+        checkButton();
+    });
+
+    function checkButton() {
+        var currentLength = $("#internalActivities tr:visible").length;
+
+        if (currentLength >= trsLength) {
+            btnMore.hide();
+        } else {
+            btnMore.show();
+        }
+
+        if (trsLength > 8 && currentLength > 8) {
+            btnLess.show();
+        } else {
+            btnLess.hide();
+        }
+
+    }
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load("current", {packages: ["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    var wins = "{{ tuplelast20games.1 }}";
+    var losses = "{{ tuplelast20games.2 }}";
+
+    function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+            ['Wins', 'Loses'],
+            ['Wins', parseInt(wins)],
+            ['Loses', parseInt(losses)]
+        ]);
+
+        var options = {
+            pieHole: 0.7,
+            legend: 'none',
+            chartArea: {
+                width: '100%',
+                height: '100%'
+            },
+            enableInteractivity: false,
+            pieSliceText: 'none',
+            slices: {
+                0: {color: '#64b5f6'},
+                1: {color: '#ef5350'}
+            },
+            backgroundColor: 'transparent'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+    }
+</script>
+{% endblock%}

@@ -1,0 +1,305 @@
+
+
+    <table style="border: 0" class="ALLCOUNTERS">
+        <tr>
+            <td style="border-bottom: 0" width="300px">
+                <table class="colapse">
+                    <tr>
+                        <th colspan="2">{{ champ }} is <span style="color: #ef5350">weak</span> against</th>
+                        <th>Win ratio</th>
+                    </tr>
+                    {% for weak in counters %}
+                    <tr>
+                        <td><img src="{{ weak.1|safe }}" class="circle"></td>
+                        <td>{{ weak.0|safe }}</td>
+                        <td style="text-align: center"><strong>{{ weak.2|safe }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+            <td style="border-bottom: 0">
+                <table class="colapse">
+                    <tr>
+                        <th colspan="2">{{ champ }} is <span style="color: #64b5f6">strong</span> against</th>
+                        <th>Win ratio</th>
+                    </tr>
+                    {% for weak in goodagainst %}
+                    <tr>
+                        <td><img src="{{ weak.1|safe }}" class="circle"></td>
+                        <td>{{ weak.0|safe }}</td>
+                        <td style="text-align: center"><strong>{{ weak.2|safe }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br>
+
+    <table class="fullwidth">
+        <tr>
+            <th style="height: 40px; background-color: white; width: 500px"><strong><b>Recommended Summoner Spells</b></strong></th>
+        </tr>
+        <tr>
+            <td>
+                {% for spell in summoner_spells %}
+                <img src="{{ spell }}" style="padding-left: 10px">
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th style="height: 40px; background-color: white"><strong><b>Recommended Skill Build</b></strong></th>
+        </tr>
+        <tr>
+            <td style="border-bottom: 0">
+                {% for ability in skill_order %}
+                <img src="{{ ability.0|safe }}" style="padding-left: 10px">
+                <span style="font-size: 25px"><strong><b>{{ ability.1|safe }}</b></strong></span>
+                <img src="http://opgg-static.akamaized.net/images/site/champion/blet.png"
+                     style="padding-bottom: 15px; padding-left: 5px">
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table class="fullskillorder" style="table-layout: fixed; border: 0">
+                    <tr>
+                        {% for skill in skill_order_table %}
+                        <th style="border-radius: 0; background-color: white; text-align: center;border: 1px solid #dddddd; margin: 0; padding: 0;width: 32px; overflow: hidden; white-space: nowrap; display: inline-block"
+                            width="32" height="32">
+                            {{ forloop.counter }}
+                        </th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for skill in skill_order_table %}
+                        <td style="border-radius: 0; text-align: center;border: 1px solid #dddddd; margin: 0; margin-bottom: 10px; padding: 0;width: 32px; overflow: hidden; white-space: nowrap; display: inline-block"
+                            width="32" height="32">
+                            {% if skill|length > 1 %}
+                            <img src="{{ skill }}" width="31" height="31"
+                                 style="vertical-align: bottom; display: block; width: 100%; height: 100%">
+                            {% else %}
+                            {{ skill }}
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="build">
+        <tr>
+            <th style="width: 500px; height: 40px; background-color: white; padding-left: 15px; text-align:left"><strong><b>Recommended
+                Items Start</b></strong></th>
+        </tr>
+        {% for item in build|slice:":2" %}
+        <tr>
+            <td>
+                {% for itemm in item %}
+                <img src="{{ itemm }}" style="padding-left: 10px">
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+            <th style="padding-left: 15px; text-align:left; height: 40px; background-color: white; width: 500px;"><strong><b>Recommended
+                Items Core</b></strong></th>
+        </tr>
+        {% for item in build|slice:"3:7" %}
+        <tr>
+            <td>
+                {% for itemm in item %}
+                <img src="{{ itemm }}" style="padding-left: 10px">
+                <img src="http://opgg-static.akamaized.net/images/site/champion/blet.png"
+                     style="padding-bottom: 15px; padding-left: 5px">
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+            <th style="width: 500px; padding-left: 15px; text-align:left; height: 40px; background-color: white"><strong><b>Recommended
+                Boots</b></strong></th>
+        </tr>
+        {% for item in build|slice:"7:10" %}
+        <tr>
+            <td>
+                {% for itemm in item %}
+                <img src="{{ itemm }}" style="padding-left: 10px">
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <table class="masteries">
+        <tr>
+            <th style="width: 500px; padding-left: 15px; text-align:left; height: 40px; background-color: white"><strong><b>Recommended
+                Masteries</b></strong></th>
+        </tr>
+        <tr>
+            <th style="padding-left: 15px; text-align:left; height: 70px; background-color: white"><strong><b>
+                <img class="circle" id="secondarykey" src="{{ masteries_header_icons.0 }}">
+                <img class="circle" id="mainkey" src="{{ masteries_header_icons.1 }}">
+                <img class="circle" id="secondarymastery" src="{{ masteries_header_icons.2 }}">
+            </b></strong></th>
+        </tr>
+    </table>
+    <br>
+    <table style="border: 0" class="ALL">
+        <tr>
+            <td style="border-bottom: 0" width="250">
+                <table style="border: 0" class="allmasteries_primary">
+                    <tr>
+                        <td style="border-bottom: 0; text-align: left; padding-left: 71px"><img
+                                src="{{ primary_masteries.0.0 }}" class="circle"></td>
+                    </tr>
+                    {% for item in primary_masteries|slice:"1:" %}
+                    <tr>
+                        <td style="border-bottom: 0">
+                            {% for itemm in item %}
+                            <img class="circle" src="{{ itemm }}"
+                                 style="padding-left: 10px; text-align: left; width: auto; max-height: 42px">
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+
+            <td style="border-bottom: 0">
+                <table style="border: 0" class="allmasteries_secondary">
+                    <tr>
+                        <td style="border-bottom: 0; text-align: left; padding-left: 71px"><img
+                                src="{{ secondary_masteries.0.0 }}"
+                                class="circle"></td>
+                    </tr>
+                    {% for item in secondary_masteries|slice:"1:" %}
+                    <tr>
+                        <td style="border-bottom: 0">
+                            {% for itemm in item %}
+                            <img class="circle" src="{{ itemm }}"
+                                 style="padding-left: 10px; text-align: left; width: auto; max-height: 42px">
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+    </table>
+
+
+
+<style>
+    .ALL {
+        border: 0;
+        border-radius: 1px;
+        background-color: #fafafa;
+        /*display: table-cell;*/
+        vertical-align: middle;
+        text-align: left;
+        /*border-collapse: collapse;*/
+        /*border: 1px solid #dddddd;*/
+        /*table-layout: fixed;*/
+        /*width: auto;*/
+        margin: 0;
+        margin-bottom: 50px;
+        table-layout: fixed;
+        width: 100%;
+        white-space: nowrap;
+    }
+
+    .fullskillorder {
+        table-layout: fixed;
+        width: 100%;
+        white-space: nowrap;
+    }
+
+    #mainkey {
+        background: #000;
+        margin-bottom: -1px;
+        margin-left: -9px;
+    }
+
+    #secondarykey {
+        display: inline-block;
+        border-radius: 50%;
+        vertical-align: bottom;
+    }
+
+    #secondarymastery {
+        margin-left: 13px;
+    }
+
+    .colapse {
+        border-radius: 1px;
+        background-color: #fafafa;
+        display: table-cell;
+        vertical-align: middle;
+        border-collapse: collapse;
+        border: 1px solid #dddddd;
+        /*table-layout: fixed;*/
+        width: auto;
+        margin: 0;
+    }
+
+    .build {
+        border-radius: 1px;
+        background-color: #fafafa;
+        /*display: table-cell;*/
+        vertical-align: middle;
+        text-align: left;
+        /*border-collapse: collapse;*/
+        border: 1px solid #dddddd;
+        /*table-layout: fixed;*/
+        /*width: auto;*/
+        margin: 0;
+        margin-bottom: 50px;
+        table-layout: fixed;
+        width: 100%;
+        white-space: nowrap;
+    }
+
+    .fullwidth {
+        border-radius: 1px;
+        background-color: #fafafa;
+        /*display: table-cell;*/
+        vertical-align: middle;
+        text-align: left;
+        /*border-collapse: collapse;*/
+        border: 1px solid #dddddd;
+        /*table-layout: fixed;*/
+        /*width: auto;*/
+        margin: 0;
+        margin-bottom: 50px;
+    }
+
+    .fullwidth th {
+        text-align: left;
+        padding-left: 15px;
+    }
+
+    td {
+        border-bottom: 1px solid #dddddd;
+        margin: 0;
+        padding: 0;
+        padding-top: 6px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    th {
+        border-bottom: 1px solid #dddddd;
+        text-align: center;
+        padding: 0;
+        padding-left: 5px;
+        padding-right: 5px;
+        margin-bottom: 0;
+        /*font-size: 90%;*/
+    }
+
+</style>
